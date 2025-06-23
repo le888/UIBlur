@@ -1,0 +1,6 @@
+/UIBlur/.idea
+*.csproj
+/UIBlur/Library
+/UIBlur/Temp
+/UIBlur/Logs
+/UIBlur/obj
