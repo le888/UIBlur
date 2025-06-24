@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
@@ -6,9 +5,9 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public class NewBehaviourScript : MonoBehaviour
+public class BlurManager : MonoBehaviour
 {
-    public static bool NeedBulur = false;
+    public static bool needBlur = false;
     private static Texture2D screenTexture;
     public Material blurMaterialH;
     public Material blurMaterialV;
@@ -27,18 +26,29 @@ public class NewBehaviourScript : MonoBehaviour
     private const string k_OutputName = "_CopyColorBlurTexture";
     private static int m_OutputId = Shader.PropertyToID(k_OutputName);
 
+    
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
+
+    [Button("TestNeedBlur")]
+    public static void NeedBlurs()
+    {
+        needBlur = true;
+    }
 
     private void Start()
     {
-        RenderPipelineManager.endContextRendering += OnPostRenderCallback;
+        RenderPipelineManager.beginFrameRendering += OnPostRenderCallback;
     }
 
-    private void OnPostRenderCallback(ScriptableRenderContext arg1, List<Camera> arg2)
+    private void OnPostRenderCallback(ScriptableRenderContext arg1, Camera[] cameras)
     {
-        if (NeedBulur)
+        if (needBlur)
         {
             BlurScreen();
-            NeedBulur = false;
+            needBlur = false;
         }   
     }
     
